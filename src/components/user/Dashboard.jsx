@@ -78,7 +78,7 @@ function Dashboard() {
               <Zap className="w-6 h-6 text-yellow-300" />
               <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">¡Estás en racha!</span>
             </div>
-            <h1 className="text-4xl font-bold mb-2">¡Hola, Juan! 👋</h1>
+            <h1 className="text-4xl font-bold mb-2">¡Hola, Ale! 👋</h1>
             <p className="text-purple-100 text-lg">
               Llevas {animatedStats.currentStreak} días consecutivos. ¡Sigue así!
             </p>
