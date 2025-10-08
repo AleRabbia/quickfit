@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // 🔧 Simular usuario automáticamente en modo desarrollo
-    if (import.meta.env.MODE === 'development') {
+    if (import.meta.env.MODE === 'development' || window.location.hostname.includes('vercel.app')) {
       // 👇 Usuario administrador (tiene acceso a todo)
       const adminUser = {
         id: 1,
