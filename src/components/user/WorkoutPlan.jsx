@@ -11,44 +11,106 @@ function WorkoutPlan() {
 
   const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
-  const workouts = {
-    'Lunes': {
-      name: 'HIIT Intenso',
-      duration: 15,
-      calories: 180,
-      difficulty: 'Avanzado',
-      exercises: [
-        { name: 'Burpees', duration: 45, rest: 15, image: '💪' },
-        { name: 'Mountain Climbers', duration: 45, rest: 15, image: '🏃' },
-        { name: 'Jump Squats', duration: 45, rest: 15, image: '🦵' },
-        { name: 'High Knees', duration: 45, rest: 15, image: '🔥' },
-      ],
-    },
-    'Martes': {
-      name: 'Cardio & Core',
-      duration: 12,
-      calories: 150,
-      difficulty: 'Intermedio',
-      exercises: [
-        { name: 'Jumping Jacks', duration: 60, rest: 20, image: '⚡' },
-        { name: 'Plancha', duration: 45, rest: 15, image: '🧘' },
-        { name: 'Bicycle Crunches', duration: 45, rest: 15, image: '💫' },
-        { name: 'Russian Twists', duration: 45, rest: 15, image: '🌀' },
-      ],
-    },
-    'Miércoles': {
-      name: 'Fuerza Upper Body',
-      duration: 15,
-      calories: 160,
-      difficulty: 'Intermedio',
-      exercises: [
-        { name: 'Push-ups', duration: 45, rest: 15, image: '💪' },
-        { name: 'Tricep Dips', duration: 45, rest: 15, image: '🔧' },
-        { name: 'Pike Push-ups', duration: 45, rest: 15, image: '⬆️' },
-        { name: 'Plank to Down Dog', duration: 45, rest: 15, image: '🐕' },
-      ],
-    },
+    // 🎵 Generador de sonidos simple con Web Audio API
+  const playBeep = (frequency = 800, duration = 0.2) => {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + duration);
+
+    // Atenuar volumen
+    gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
   };
+
+  const workouts = {
+  'Lunes': {
+    name: 'Cardio + Piernas',
+    duration: 10,
+    calories: 120,
+    difficulty: 'Intermedio',
+    exercises: [
+      { name: 'Jumping Jacks', duration: 40, rest: 20, image: '⚡' },
+      { name: 'Sentadillas', duration: 40, rest: 20, image: '🦵' },
+      { name: 'Burpees', duration: 40, rest: 20, image: '🔥' },
+      { name: 'Zancadas alternas', duration: 40, rest: 20, image: '🏃' },
+      { name: 'Mountain Climbers', duration: 40, rest: 20, image: '⛰️' },
+    ],
+  },
+  'Martes': {
+    name: 'Core + Cardio',
+    duration: 10,
+    calories: 110,
+    difficulty: 'Intermedio',
+    exercises: [
+      { name: 'Plancha con toque de hombros', duration: 40, rest: 20, image: '🤸' },
+      { name: 'Bicicleta en el aire', duration: 40, rest: 20, image: '🚴' },
+      { name: 'High Knees', duration: 40, rest: 20, image: '🔥' },
+      { name: 'Plancha con rodilla al codo', duration: 40, rest: 20, image: '🧘' },
+      { name: 'Saltos de tijera', duration: 40, rest: 20, image: '⚡' },
+    ],
+  },
+  'Miércoles': {
+    name: 'Piernas + Glúteos',
+    duration: 10,
+    calories: 120,
+    difficulty: 'Intermedio',
+    exercises: [
+      { name: 'Sentadillas con salto', duration: 40, rest: 20, image: '🦵' },
+      { name: 'Puente de glúteos', duration: 40, rest: 20, image: '🍑' },
+      { name: 'Zancadas con salto', duration: 40, rest: 20, image: '🏋️' },
+      { name: 'Patada de glúteo', duration: 40, rest: 20, image: '🐾' },
+      { name: 'Step touch lateral', duration: 40, rest: 20, image: '🎵' },
+    ],
+  },
+  'Jueves': {
+    name: 'Full Body',
+    duration: 10,
+    calories: 130,
+    difficulty: 'Intermedio',
+    exercises: [
+      { name: 'Burpees', duration: 40, rest: 20, image: '🔥' },
+      { name: 'Sentadilla + Press imaginario', duration: 40, rest: 20, image: '💪' },
+      { name: 'Mountain Climbers', duration: 40, rest: 20, image: '⛰️' },
+      { name: 'Plank Jacks', duration: 40, rest: 20, image: '🧘' },
+      { name: 'Jumping Jacks', duration: 40, rest: 20, image: '⚡' },
+    ],
+  },
+  'Viernes': {
+    name: 'Core + Cardio',
+    duration: 10,
+    calories: 110,
+    difficulty: 'Intermedio',
+    exercises: [
+      { name: 'Crunches', duration: 40, rest: 20, image: '💫' },
+      { name: 'Plancha con elevación de pierna', duration: 40, rest: 20, image: '🧘' },
+      { name: 'High Knees', duration: 40, rest: 20, image: '🔥' },
+      { name: 'Bicicleta en el aire', duration: 40, rest: 20, image: '🚴' },
+      { name: 'Jumping Jacks', duration: 40, rest: 20, image: '⚡' },
+    ],
+  },
+  'Sábado': {
+    name: 'Piernas + Cardio Intenso',
+    duration: 10,
+    calories: 130,
+    difficulty: 'Avanzado',
+    exercises: [
+      { name: 'Sentadillas profundas', duration: 40, rest: 20, image: '🦵' },
+      { name: 'Burpees', duration: 40, rest: 20, image: '🔥' },
+      { name: 'Zancadas alternas', duration: 40, rest: 20, image: '🏃' },
+      { name: 'Mountain Climbers', duration: 40, rest: 20, image: '⛰️' },
+      { name: 'Squat Pulses', duration: 40, rest: 20, image: '💥' },
+    ],
+  },
+};
+
 
   const todayWorkout = workouts[selectedDay] || null;
 
@@ -59,12 +121,15 @@ function WorkoutPlan() {
         setTimeLeft(time => time - 1);
       }, 1000);
     } else if (timeLeft === 0) {
+        playBeep();
       if (isResting) {
         if (currentExercise < todayWorkout.exercises.length - 1) {
           setCurrentExercise(prev => prev + 1);
           setTimeLeft(todayWorkout.exercises[currentExercise + 1].duration);
           setIsResting(false);
+          setTimeout(() => playBeep(1200, 0.15), 300);
         } else {
+            playBeep(600, 0.6);
           setIsTimerActive(false);
           setShowWorkoutModal(false);
         }
