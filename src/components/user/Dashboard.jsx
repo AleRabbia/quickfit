@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import { Dumbbell, Flame, TrendingUp, Target, Clock, Calendar, Award, Zap, ChevronRight } from 'lucide-react';
 
 function Dashboard() {
@@ -239,7 +240,10 @@ function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">
+          <Link
+        to="/workout"
+        className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">
+          {/*<button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">*/}
             <div className="flex items-center justify-between mb-4">
               <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-4 rounded-xl shadow-lg group-hover:scale-110 transition">
                 <Dumbbell className="w-8 h-8 text-white" />
@@ -252,9 +256,13 @@ function Dashboard() {
               <Zap className="w-4 h-4" />
               <span>¡Comienza ahora!</span>
             </div>
-          </button>
+          {/*</button>*/}
+          </Link>
 
-          <button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">
+          <Link
+        to="/nutrition"
+        className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">
+          {/*<button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">*/}
             <div className="flex items-center justify-between mb-4">
               <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-4 rounded-xl shadow-lg group-hover:scale-110 transition">
                 <span className="text-3xl">🥗</span>
@@ -267,9 +275,13 @@ function Dashboard() {
               <Target className="w-4 h-4" />
               <span>Ver tu plan</span>
             </div>
-          </button>
+          {/*</button>*/}
+          </Link>
 
-          <button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">
+          <Link
+        to="/progress"
+        className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">
+          {/*<button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">*/}
             <div className="flex items-center justify-between mb-4">
               <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-4 rounded-xl shadow-lg group-hover:scale-110 transition">
                 <TrendingUp className="w-8 h-8 text-white" />
@@ -282,7 +294,8 @@ function Dashboard() {
               <Award className="w-4 h-4" />
               <span>Ver estadísticas</span>
             </div>
-          </button>
+          {/*</button>*/}
+          </Link>
         </div>
 
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-200">
