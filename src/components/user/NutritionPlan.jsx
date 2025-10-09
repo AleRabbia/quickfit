@@ -1,8 +1,27 @@
-import { useState } from 'react';
-import { Apple, Coffee, Sun, Utensils, Moon, Flame, Droplet, CheckCircle2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Apple, Coffee, Sun, Utensils, Moon, Flame, Droplet, CheckCircle2, Sparkles } from 'lucide-react';
+import NutritionWizard from './NutritionWizard.jsx';
+//import WorkoutWizard from './WorkoutWizard';
 
 function NutritionPlan() {
   const [completedMeals, setCompletedMeals] = useState([]);
+  const [showWizard, setShowWizard] = useState(false);
+
+  useEffect(() => {
+    if (showWizard) {
+      const scrollBarComp = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollBarComp}px`;
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+  }, [showWizard]);
 
   const nutritionPlan = {
     dailyCalories: 2000,
@@ -112,8 +131,31 @@ function NutritionPlan() {
     return Math.min((current / target) * 100, 100);
   };
 
+  const handleWizardComplete = (formData) => {
+    console.log('Datos del wizard:', formData);
+    setShowWizard(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-green-50 p-6">
+        {showWizard && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+          onClick={() => setShowWizard(false)}
+        >
+          <div
+            className="relative bg-white rounded-3xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto scrollbar-hide"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <NutritionWizard
+              onClose={() => setShowWizard(false)}
+              onComplete={handleWizardComplete}
+            />
+          </div>
+        </div>
+      )}
+
+
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
           <div className="flex items-center justify-between mb-6">
@@ -327,6 +369,43 @@ function NutritionPlan() {
               ))}
             </div>
             <p className="text-sm text-blue-700 mt-3 font-semibold">8 vasos = 2 litros diarios</p>
+          </div>
+        </div>
+
+        {/* CTA para personalizar plan */}
+        <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl p-8 text-white shadow-2xl">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <Sparkles className="w-8 h-8" />
+                <h3 className="text-2xl font-bold">¿Listo para tu plan personalizado?</h3>
+              </div>
+              <p className="text-green-100 mb-4">
+                Este es un plan genérico. Responde algunas preguntas y te crearemos un plan
+                adaptado a tus objetivos, preferencias y estilo de vida.
+              </p>
+              <ul className="space-y-2 text-green-100">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5" />
+                  Ajustado a tus horarios y rutinas
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5" />
+                  Considera tus alergias y preferencias
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5" />
+                  Alineado con tu presupuesto y tiempo
+                </li>
+              </ul>
+            </div>
+            <button
+              onClick={() => setShowWizard(true)}
+              className="px-8 py-4 bg-white text-green-600 rounded-xl font-bold text-lg hover:scale-105 transition-all shadow-xl whitespace-nowrap flex items-center gap-2"
+            >
+              <Sparkles className="w-5 h-5" />
+              Comenzar Cuestionario
+            </button>
           </div>
         </div>
       </div>
