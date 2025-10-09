@@ -455,15 +455,15 @@ function WorkoutPlan() {
             <ul className="space-y-2 text-pink-100">
                 <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5"/>
-                Diseñado según tus metas: fuerza, resistencia o tonificación
+                Adaptado a tu nivel y experiencia
                 </li>
                 <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5" />
-                Adaptado a tu disponibilidad y nivel actual
+                Ajustado a tus horarios y rutinas
                 </li>
                 <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5" />
-                Combinación óptima de ejercicios y descanso
+                Enfocado en tus objetivos reales
                 </li>
             </ul>
             </div>
