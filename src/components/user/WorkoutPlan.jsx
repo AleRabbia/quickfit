@@ -438,42 +438,46 @@ function WorkoutPlan() {
           </div>
         )}
 
-        {/* CTA para personalizar plan */}
-        <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl p-8 text-white shadow-2xl">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        {/* CTA para personalizar plan de entrenamiento */}
+        <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl p-8 text-white shadow-2xl">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
+            <div className="flex items-center gap-3 mb-3">
                 <Sparkles className="w-8 h-8" />
-                <h3 className="text-2xl font-bold">¿Listo para tu plan personalizado?</h3>
-              </div>
-              <p className="text-green-100 mb-4">
-                Este es un plan genérico. Responde algunas preguntas y te crearemos un plan
-                adaptado a tus objetivos, preferencias y estilo de vida.
-              </p>
-              <ul className="space-y-2 text-green-100">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5" />
-                  Ajustado a tus horarios y rutinas
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5" />
-                  Considera tus alergias y preferencias
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5" />
-                  Alineado con tu presupuesto y tiempo
-                </li>
-              </ul>
+                <h3 className="text-2xl font-bold">¿Listo para tu plan de entrenamiento personalizado?</h3>
             </div>
+
+            <p className="text-pink-100 mb-4">
+                Este es un plan base. Responde algunas preguntas y crearemos un plan adaptado a tus
+                objetivos, nivel de experiencia y estilo de vida.
+            </p>
+
+            <ul className="space-y-2 text-pink-100">
+                <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-300" />
+                Diseñado según tus metas: fuerza, resistencia o tonificación
+                </li>
+                <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-300" />
+                Adaptado a tu disponibilidad y nivel actual
+                </li>
+                <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-300" />
+                Combinación óptima de ejercicios y descanso
+                </li>
+            </ul>
+            </div>
+
             <button
-              onClick={() => setShowWizard(true)}
-              className="px-8 py-4 bg-white text-green-600 rounded-xl font-bold text-lg hover:scale-105 transition-all shadow-xl whitespace-nowrap flex items-center gap-2"
+            onClick={() => setShowWizard(true)}
+            className="px-8 py-4 bg-white text-purple-700 rounded-xl font-bold text-lg hover:scale-105 transition-all shadow-xl whitespace-nowrap flex items-center gap-2"
             >
-              <Sparkles className="w-5 h-5" />
-              Comenzar Cuestionario
+            <Sparkles className="w-5 h-5" />
+            Comenzar Evaluación
             </button>
-          </div>
         </div>
+        </div>
+
       </div>
     </div>
   );
