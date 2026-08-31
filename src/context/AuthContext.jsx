@@ -1,4 +1,4 @@
-/*import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { loginUser, registerUser, getUserProfile } from '../services/api';
 
 const AuthContext = createContext(null);
@@ -20,34 +20,47 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const checkAuth = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('quickfit_token');
     if (token) {
       try {
         const userData = await getUserProfile();
         setUser(userData);
       } catch (error) {
-        localStorage.removeItem('token');
+        console.error('Error al verificar autenticación:', error);
+        localStorage.removeItem('quickfit_token');
+        localStorage.removeItem('quickfit_user');
       }
     }
     setLoading(false);
   };
 
   const login = async (email, password) => {
-    const data = await loginUser(email, password);
-    localStorage.setItem('token', data.token);
-    setUser(data.user);
-    return data;
+    try {
+      const data = await loginUser(email, password);
+      localStorage.setItem('quickfit_token', data.token);
+      localStorage.setItem('quickfit_user', JSON.stringify(data.user));
+      setUser(data.user);
+      return data;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const register = async (userData) => {
-    const data = await registerUser(userData);
-    localStorage.setItem('token', data.token);
-    setUser(data.user);
-    return data;
+    try {
+      const data = await registerUser(userData);
+      localStorage.setItem('quickfit_token', data.token);
+      localStorage.setItem('quickfit_user', JSON.stringify(data.user));
+      setUser(data.user);
+      return data;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('quickfit_token');
+    localStorage.removeItem('quickfit_user');
     setUser(null);
   };
 
@@ -60,11 +73,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};*/
+};
 
 
 //para probar usuarios simulados
-import { createContext, useContext, useState, useEffect } from 'react';
+/*import { createContext, useContext, useState, useEffect } from 'react';
 import { loginUser, registerUser, getUserProfile } from '../services/api';
 
 const AuthContext = createContext(null);
@@ -155,4 +168,4 @@ export const AuthProvider = ({ children }) => {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+};*/

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { LogOut, User, Dumbbell, Apple, TrendingUp, Settings } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -49,6 +50,11 @@ function Navbar() {
 
           {/* User Info & Logout */}
           <div className="flex items-center space-x-4">
+            <Link to="/settings" className="hover:text-indigo-200 transition flex items-center gap-2">
+              <Settings className="w-5 h-5" />
+              <span>Ajustes</span>
+            </Link>
+            {/*<ThemeToggle />*/}
             <span className="hidden md:block text-sm">
               Hola, <span className="font-semibold">{user?.name}</span>
             </span>

@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { Dumbbell, Mail, Lock, User, AlertCircle, Eye, EyeOff, Check, X } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -12,6 +14,8 @@ function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { register } = useAuth();
 
   const passwordRequirements = [
     { label: 'Al menos 6 caracteres', met: formData.password.length >= 6 },
@@ -26,7 +30,7 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -41,11 +45,27 @@ function Register() {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      console.log('Register:', formData);
+    
+    try {
+      await register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+      navigate('/dashboard');
+    } catch (err) {
+  console.error(err.response?.data);
+  // Si vienen errores de validación del backend:
+  if (err.response?.data?.errors) {
+    const messages = Object.values(err.response.data.errors).flat();
+    setError(messages.join(', '));
+  } else {
+    setError(err.response?.data?.message || 'Error al crear la cuenta');
+  }} finally {
       setLoading(false);
-    }, 1500);
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
@@ -294,9 +314,13 @@ function Register() {
 
             <p className="text-center text-purple-200 mt-4">
               ¿Ya tienes cuenta?{' '}
-              <button className="text-white font-semibold hover:text-purple-300 transition">
+              <a href='#'
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/login');}}
+                 className="text-white font-semibold hover:text-purple-300 transition">
                 Inicia sesión
-              </button>
+              </a>
             </p>
           </div>
         </div>

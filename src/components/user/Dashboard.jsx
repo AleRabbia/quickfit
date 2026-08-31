@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+/*import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Dumbbell, Flame, TrendingUp, Target, Clock, Calendar, Award, Zap, ChevronRight } from 'lucide-react';
 
@@ -243,8 +243,8 @@ function Dashboard() {
           <Link
         to="/workout"
         className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">
-          {/*<button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">*/}
-            <div className="flex items-center justify-between mb-4">
+          {/*<button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">*//*}
+           /* <div className="flex items-center justify-between mb-4">
               <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-4 rounded-xl shadow-lg group-hover:scale-110 transition">
                 <Dumbbell className="w-8 h-8 text-white" />
               </div>
@@ -256,14 +256,14 @@ function Dashboard() {
               <Zap className="w-4 h-4" />
               <span>¡Comienza ahora!</span>
             </div>
-          {/*</button>*/}
+          {/*</button>*/ /*}
           </Link>
 
           <Link
         to="/nutrition"
         className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">
-          {/*<button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">*/}
-            <div className="flex items-center justify-between mb-4">
+          {/*<button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">*//*}
+           /* <div className="flex items-center justify-between mb-4">
               <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-4 rounded-xl shadow-lg group-hover:scale-110 transition">
                 <span className="text-3xl">🥗</span>
               </div>
@@ -275,14 +275,14 @@ function Dashboard() {
               <Target className="w-4 h-4" />
               <span>Ver tu plan</span>
             </div>
-          {/*</button>*/}
+          {/*</button>*//*}
           </Link>
 
           <Link
         to="/progress"
         className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">
-          {/*<button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">*/}
-            <div className="flex items-center justify-between mb-4">
+          {/*<button className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left">*//*}
+           /* <div className="flex items-center justify-between mb-4">
               <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-4 rounded-xl shadow-lg group-hover:scale-110 transition">
                 <TrendingUp className="w-8 h-8 text-white" />
               </div>
@@ -294,7 +294,7 @@ function Dashboard() {
               <Award className="w-4 h-4" />
               <span>Ver estadísticas</span>
             </div>
-          {/*</button>*/}
+          {/*</button>*//*}
           </Link>
         </div>
 
@@ -307,6 +307,261 @@ function Dashboard() {
               <h3 className="font-bold text-amber-900 text-lg mb-2">Consejo del día</h3>
               <p className="text-amber-800">
                 La hidratación es clave para el rendimiento. Bebe al menos 500ml de agua 30 minutos antes de tu entrenamiento y mantén una botella cerca durante el ejercicio.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Dashboard;*/
+
+import { useState, useEffect } from 'react';
+import { useAuth } from "../../context/AuthContext";
+import { getDashboardStats } from '../../services/api';
+import { Dumbbell, Flame, TrendingUp, Target, Clock, Calendar, Award, Zap, ChevronRight } from 'lucide-react';
+
+function Dashboard() {
+  const { user } = useAuth();
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    loadDashboardStats();
+  }, []);
+
+  const loadDashboardStats = async () => {
+    try {
+      setLoading(true);
+      const data = await getDashboardStats();
+      setStats(data);
+    } catch (err) {
+      console.error('Error cargando estadísticas:', err);
+      setError('Error al cargar las estadísticas');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 flex items-center justify-center">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md">
+          <p className="text-red-800">{error}</p>
+          <button 
+            onClick={loadDashboardStats}
+            className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const dailyTip = "Recuerda mantener una buena hidratación durante y después de tu entrenamiento. Bebe al menos 500ml de agua después de cada sesión.";
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-purple-50 p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Welcome Section */}
+        <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 rounded-3xl p-8 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+          
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-3">
+              <Zap className="w-6 h-6 text-yellow-300" />
+              <span className="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">¡Estás en racha!</span>
+            </div>
+            <h1 className="text-4xl font-bold mb-2">¡Hola, {user?.name}! 👋</h1>
+            <p className="text-purple-100 text-lg">
+              Llevas {stats?.currentStreak || 0} días consecutivos. ¡Sigue así!
+            </p>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-purple-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-3 rounded-xl shadow-lg">
+                <Dumbbell className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-gray-800">{stats?.workoutsCompleted || 0}</div>
+                <div className="text-xs text-green-600 font-medium flex items-center justify-end gap-1">
+                  <TrendingUp className="w-3 h-3" />
+                  Este mes
+                </div>
+              </div>
+            </div>
+            <div className="text-sm text-gray-600 font-medium">Entrenamientos</div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-orange-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-br from-orange-500 to-red-500 p-3 rounded-xl shadow-lg">
+                <Target className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-gray-800">{stats?.currentStreak || 0}</div>
+                <div className="text-xs text-green-600 font-medium flex items-center justify-end gap-1">
+                  <Zap className="w-3 h-3" />
+                  ¡Récord!
+                </div>
+              </div>
+            </div>
+            <div className="text-sm text-gray-600 font-medium">Días consecutivos</div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-blue-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-br from-blue-500 to-cyan-500 p-3 rounded-xl shadow-lg">
+                <Clock className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-gray-800">{stats?.totalMinutes || 0}</div>
+                <div className="text-xs text-green-600 font-medium flex items-center justify-end gap-1">
+                  <TrendingUp className="w-3 h-3" />
+                  Este mes
+                </div>
+              </div>
+            </div>
+            <div className="text-sm text-gray-600 font-medium">Minutos totales</div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-red-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-br from-red-500 to-pink-500 p-3 rounded-xl shadow-lg">
+                <Flame className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-gray-800">{stats?.caloriesBurned || 0}</div>
+                <div className="text-xs text-green-600 font-medium flex items-center justify-end gap-1">
+                  <TrendingUp className="w-3 h-3" />
+                  Este mes
+                </div>
+              </div>
+            </div>
+            <div className="text-sm text-gray-600 font-medium">Calorías quemadas</div>
+          </div>
+        </div>
+
+        {/* Weekly Activity */}
+        {stats?.weeklyActivity && stats.weeklyActivity.length > 0 && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800">Actividad Semanal</h2>
+                <p className="text-sm text-gray-500 mt-1">Tus entrenamientos de la última semana</p>
+              </div>
+              <Calendar className="w-6 h-6 text-purple-600" />
+            </div>
+
+            <div className="flex items-end justify-between gap-3 h-48">
+              {stats.weeklyActivity.map((day, index) => (
+                <div key={index} className="flex-1 flex flex-col items-center gap-2">
+                  <div className="flex-1 w-full flex items-end">
+                    <div 
+                      className={`w-full rounded-t-lg transition-all duration-500 ${
+                        day.completed 
+                          ? 'bg-gradient-to-t from-purple-500 to-pink-500' 
+                          : 'bg-gray-200'
+                      }`}
+                      style={{ 
+                        height: day.completed ? `${(day.calories / 200) * 100}%` : '20%',
+                        transitionDelay: `${index * 100}ms`
+                      }}
+                    >
+                      {day.completed && day.calories > 0 && (
+                        <div className="text-white text-xs font-bold text-center mt-2">
+                          {day.calories}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className={`text-sm font-medium ${day.completed ? 'text-purple-600' : 'text-gray-400'}`}>
+                    {day.day}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <a href="/workout" className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left block">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-4 rounded-xl shadow-lg group-hover:scale-110 transition">
+                <Dumbbell className="w-8 h-8 text-white" />
+              </div>
+              <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-1 transition" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-800 mb-2">Entrenamiento de Hoy</h3>
+            <p className="text-sm text-gray-600 mb-3">Ver tu rutina personalizada</p>
+            <div className="flex items-center gap-2 text-xs text-purple-600 font-medium">
+              <Zap className="w-4 h-4" />
+              <span>¡Comienza ahora!</span>
+            </div>
+          </a>
+
+          <a href="/nutrition" className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left block">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-4 rounded-xl shadow-lg group-hover:scale-110 transition">
+                <span className="text-3xl">🥗</span>
+              </div>
+              <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-800 mb-2">Plan Nutricional</h3>
+            <p className="text-sm text-gray-600 mb-3">Alimentación balanceada</p>
+            <div className="flex items-center gap-2 text-xs text-green-600 font-medium">
+              <Target className="w-4 h-4" />
+              <span>Ver tu plan</span>
+            </div>
+          </a>
+
+          <a href="/progress" className="group bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 text-left block">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-gradient-to-br from-blue-500 to-cyan-600 p-4 rounded-xl shadow-lg group-hover:scale-110 transition">
+                <TrendingUp className="w-8 h-8 text-white" />
+              </div>
+              <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-800 mb-2">Tu Progreso</h3>
+            <p className="text-sm text-gray-600 mb-3">Analiza tu evolución</p>
+            <div className="flex items-center gap-2 text-xs text-blue-600 font-medium">
+              <Award className="w-4 h-4" />
+              <span>Ver estadísticas</span>
+            </div>
+          </a>
+        </div>
+
+        {/* Daily Tip */}
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-200">
+          <div className="flex items-start gap-4">
+            <div className="bg-amber-500 p-3 rounded-xl shadow-lg">
+              <span className="text-2xl">💡</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-amber-900 text-lg mb-2">Consejo del día</h3>
+              <p className="text-amber-800">
+                {dailyTip}
               </p>
             </div>
           </div>

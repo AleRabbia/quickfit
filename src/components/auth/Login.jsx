@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Dumbbell, Mail, Lock, AlertCircle, Eye, EyeOff, Zap } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext'; 
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -7,17 +9,23 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-    
-    // Simulación de login
-    setTimeout(() => {
-      console.log('Login:', { email, password });
+
+    try {
+      await login(email, password);
+      navigate('/dashboard');
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || 'Error al iniciar sesión');
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -210,7 +218,12 @@ function Login() {
             {/* Register Link */}
             <p className="text-center text-purple-200 mt-8">
               ¿No tienes cuenta?{' '}
-              <a href="#" className="text-white font-semibold hover:text-purple-300 transition">
+              <a href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/register');
+              }}
+              className="text-white font-semibold hover:text-purple-300 transition">
                 Regístrate gratis
               </a>
             </p>
