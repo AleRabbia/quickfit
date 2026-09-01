@@ -62,6 +62,7 @@ function NutritionWizard({ onClose, onComplete }) {
     cookingTime: "",
     needPortable: false,
     preferredSupport: "",
+    useAI: true,
   });
 
   const totalSteps = 5;
@@ -1134,6 +1135,31 @@ function NutritionWizard({ onClose, onComplete }) {
                 </div>
               </div>
 
+              <div>
+                <label className="flex items-center gap-3 cursor-pointer group p-4 border-2 border-cyan-200 rounded-xl hover:border-cyan-400 hover:bg-cyan-50 transition">
+                  <input
+                    type="checkbox"
+                    checked={formData.useAI}
+                    onChange={(e) =>
+                      handleInputChange("useAI", e.target.checked)
+                    }
+                    className="w-5 h-5 rounded border-cyan-300"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-cyan-600" />
+                      <span className="text-gray-800 font-semibold group-hover:text-cyan-600 transition">
+                        Generar con IA (Gemini)
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Gemini generará un plan nutricional personalizado basado
+                      en tus preferencias
+                    </p>
+                  </div>
+                </label>
+              </div>
+
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-6">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
@@ -1143,8 +1169,9 @@ function NutritionWizard({ onClose, onComplete }) {
                     </div>
                     <div className="text-green-800 text-sm">
                       Con esta información diseñaremos un plan nutricional
-                      personalizado que se ajusta a tu estilo de vida, objetivos
-                      y preferencias alimentarias.
+                      personalizado {formData.useAI ? "usando IA" : ""} que se
+                      ajusta a tu estilo de vida, objetivos y preferencias
+                      alimentarias.
                     </div>
                   </div>
                 </div>
