@@ -320,6 +320,7 @@ function Dashboard() {
 export default Dashboard;*/
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getDashboardStats } from "../../services/api";
 import {
@@ -336,6 +337,7 @@ import {
 
 function Dashboard() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
