@@ -62,8 +62,13 @@ function NutritionCreatePage() {
       navigate("/nutrition");
     } catch (err) {
       console.error("Error creando plan nutricional:", err);
+      const validationErrors = err.response?.data?.errors;
+      const validationMessage = validationErrors
+        ? Object.values(validationErrors).flat().join(" ")
+        : null;
       setError(
         err.response?.data?.message ||
+          validationMessage ||
           "No se pudo crear el plan nutricional. Intenta nuevamente.",
       );
     } finally {
