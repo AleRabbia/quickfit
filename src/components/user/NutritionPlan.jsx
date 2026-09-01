@@ -18,10 +18,10 @@ import {
   createMealPlan,
   getMealPlans,
 } from "../../services/api.js";
-import { AuthContext } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 function NutritionPlan() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const [completedMeals, setCompletedMeals] = useState([]);
   const [showWizard, setShowWizard] = useState(false);
   const [loading, setLoading] = useState(false);
