@@ -134,7 +134,7 @@ api.interceptors.response.use(
       // Token inválido o expirado
       localStorage.removeItem('quickfit_token');
       localStorage.removeItem('quickfit_user');
-      window.location.href = '/login';
+      window.location.hash = '#/login';
     }
     return Promise.reject(error);
   }
