@@ -30,11 +30,11 @@ function CreateWorkoutPlan() {
         trainingFocus: formData.trainingFocus,
       };
 
-      // Decidir si usar IA o plan estándar
-      // Por ahora ambos hacen lo mismo hasta que implementes la IA
-      const plan = await generateAIWorkoutPlan(planRequest);
+      const shouldUseAI = Boolean(formData.useAI);
+      const plan = shouldUseAI
+        ? await generateAIWorkoutPlan(planRequest)
+        : await createWorkoutPlan(planRequest);
 
-      // Mostrar mensaje de éxito
       alert("¡Plan de entrenamiento creado exitosamente! 🎉");
 
       // Redirigir a la página de workout
