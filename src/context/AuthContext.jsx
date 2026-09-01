@@ -1,12 +1,12 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { loginUser, registerUser, getUserProfile } from '../services/api';
+import { createContext, useContext, useState, useEffect } from "react";
+import { loginUser, registerUser, getUserProfile } from "../services/api";
 
 const AuthContext = createContext(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth debe ser usado dentro de AuthProvider');
+    throw new Error("useAuth debe ser usado dentro de AuthProvider");
   }
   return context;
 };
@@ -20,15 +20,15 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const checkAuth = async () => {
-    const token = localStorage.getItem('quickfit_token');
+    const token = localStorage.getItem("quickfit_token");
     if (token) {
       try {
         const userData = await getUserProfile();
         setUser(userData);
       } catch (error) {
-        console.error('Error al verificar autenticación:', error);
-        localStorage.removeItem('quickfit_token');
-        localStorage.removeItem('quickfit_user');
+        console.error("Error al verificar autenticación:", error);
+        localStorage.removeItem("quickfit_token");
+        localStorage.removeItem("quickfit_user");
       }
     }
     setLoading(false);
@@ -37,8 +37,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const data = await loginUser(email, password);
-      localStorage.setItem('quickfit_token', data.token);
-      localStorage.setItem('quickfit_user', JSON.stringify(data.user));
+      localStorage.setItem("quickfit_token", data.token);
+      localStorage.setItem("quickfit_user", JSON.stringify(data.user));
       setUser(data.user);
       return data;
     } catch (error) {
@@ -49,8 +49,8 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const data = await registerUser(userData);
-      localStorage.setItem('quickfit_token', data.token);
-      localStorage.setItem('quickfit_user', JSON.stringify(data.user));
+      localStorage.setItem("quickfit_token", data.token);
+      localStorage.setItem("quickfit_user", JSON.stringify(data.user));
       setUser(data.user);
       return data;
     } catch (error) {
@@ -59,8 +59,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('quickfit_token');
-    localStorage.removeItem('quickfit_user');
+    localStorage.removeItem("quickfit_token");
+    localStorage.removeItem("quickfit_user");
     setUser(null);
   };
 
@@ -74,7 +74,6 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-
 
 //para probar usuarios simulados
 /*import { createContext, useContext, useState, useEffect } from 'react';

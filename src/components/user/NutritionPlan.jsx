@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Apple,
   Coffee,
@@ -18,10 +18,10 @@ import {
   createMealPlan,
   getMealPlans,
 } from "../../services/api.js";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { AuthContext } from "../../context/AuthContext.jsx";
 
 function NutritionPlan() {
-  const { user } = useAuth();
+  const { user } = useContext(AuthContext);
   const [completedMeals, setCompletedMeals] = useState([]);
   const [showWizard, setShowWizard] = useState(false);
   const [loading, setLoading] = useState(false);
