@@ -37,25 +37,11 @@ function NutritionCreatePage() {
       setError(null);
 
       const mealPlanRequest = {
-        name: `Plan nutricional de ${formData.mainGoal}`,
-        description: "Plan personalizado según tus objetivos y preferencias",
-        goal: formData.mainGoal,
-        dietType: formData.dietType,
-        dailyCalories: 2000,
-        dailyProtein: 150,
-        dailyCarbs: 200,
-        dailyFats: 65,
-        mealsPerDay: Number(formData.mealsPerDay),
-        allergies: formData.allergies ? [formData.allergies] : [],
-        intolerances: [],
-        dislikedFoods: formData.dislikedFoods ? [formData.dislikedFoods] : [],
-        budget: formData.budget,
-        cookingTime:
-          {
-            less_30: 20,
-            "30_to_60": 45,
-            more_60: 90,
-          }[formData.cookingTime] || 20,
+        ...formData,
+        allergies: formData.allergies || "",
+        dislikedFoods: formData.dislikedFoods || "",
+        mealsPerDay: String(formData.mealsPerDay),
+        cookingTime: formData.cookingTime || "less_30",
       };
 
       await generateAIMealPlan(mealPlanRequest);
