@@ -5,7 +5,7 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { initializeReminders } from "./services/reminderService";
@@ -23,18 +23,67 @@ import { useAuth } from "./context/AuthContext";
 import Settings from "./components/settings/Settings";
 import CreateWorkoutPlan from "./components/user/CreateWorkoutPlan";
 import NutritionWizard from "./components/user/NutritionWizard";
+import { generateAIMealPlan } from "./services/api";
 
 function NutritionCreatePage() {
   const navigate = useNavigate();
 
-  const handleComplete = (formData) => {
-    console.log("Plan nutricional creado:", formData);
-    navigate("/nutrition");
+  const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(false);
+
+  const handleComplete = async (formData) => {
+    try {
+      setSaving(true);
+      setError(null);
+
+      const mealPlanRequest = {
+        name: `Plan nutricional de ${formData.mainGoal}`,
+        description: "Plan personalizado según tus objetivos y preferencias",
+        goal: formData.mainGoal,
+        dietType: formData.dietType,
+        dailyCalories: 2000,
+        dailyProtein: 150,
+        dailyCarbs: 200,
+        dailyFats: 65,
+        mealsPerDay: Number(formData.mealsPerDay),
+        allergies: formData.allergies ? [formData.allergies] : [],
+        intolerances: [],
+        dislikedFoods: formData.dislikedFoods ? [formData.dislikedFoods] : [],
+        budget: formData.budget,
+        cookingTime:
+          {
+            less_30: 20,
+            "30_to_60": 45,
+            more_60: 90,
+          }[formData.cookingTime] || 20,
+      };
+
+      await generateAIMealPlan(mealPlanRequest);
+      navigate("/nutrition");
+    } catch (err) {
+      console.error("Error creando plan nutricional:", err);
+      setError(
+        err.response?.data?.message ||
+          "No se pudo crear el plan nutricional. Intenta nuevamente.",
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-green-50 p-6">
       <div className="max-w-5xl mx-auto">
+        {error && (
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-800">
+            {error}
+          </div>
+        )}
+        {saving && (
+          <div className="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-green-800">
+            Guardando tu plan nutricional...
+          </div>
+        )}
         <NutritionWizard
           onClose={() => navigate("/nutrition")}
           onComplete={handleComplete}
