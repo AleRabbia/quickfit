@@ -442,9 +442,24 @@ function Progress() {
       const startDate = new Date();
       startDate.setMonth(startDate.getMonth() - 3);
 
+      const progressPromise = getProgress(
+        startDate.toISOString(),
+        endDate.toISOString(),
+      );
+
+      const latestPromise = getLatestProgress().catch((err) => {
+        // 404 significa que todavía no hay progresos
+        if (err.response?.status === 404) {
+          return null;
+        }
+
+        // Cualquier otro error sí debe propagarse
+        throw err;
+      });
+
       const [progress, latest] = await Promise.all([
-        getProgress(startDate.toISOString(), endDate.toISOString()),
-        getLatestProgress(),
+        progressPromise,
+        latestPromise,
       ]);
 
       console.log("PROGRESS:", progress);
